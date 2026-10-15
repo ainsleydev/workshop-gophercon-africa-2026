@@ -1,27 +1,190 @@
 package pages
 
 import (
+	"strconv"
 	"workshop/internal/domain/sighting"
 	"workshop/web/views/components"
 	"workshop/web/views/layout"
 )
 
 templ Home(sightings []sighting.Sighting) {
+	{{ v := newHomeView(sightings) }}
 	@layout.Base(layout.BaseProps{
-		Title: "Sightings",
+		Title:       "Kenya Wild: wildlife sightings from across Kenya",
+		Description: "Lions, rhinos, cheetahs and more, as seen and recorded by people across Kenya.",
 	}) {
-		<h1>Sightings</h1>
-		if len(sightings) == 0 {
-			<p>No sightings have been ingested yet.</p>
-		} else {
-			<p>Total: { len(sightings) }</p>
-			<ul class="sightings">
-				for _, s := range sightings {
-					<li>
-						@components.SightingCard(s)
-					</li>
+		<section class="panel hero" aria-labelledby="hero-title">
+			<div class="hero__text">
+				<p class="eyebrow">
+					@components.Icon("leaf")
+					Wildlife of Kenya
+				</p>
+				<h1 id="hero-title">Kenya's <em>Wild</em>,<br/>Seen Up Close.</h1>
+				<p class="hero__lead">
+					Real sightings of lions, rhinos, cheetahs and more, recorded by people
+					out on Kenya's savannahs, lakes and coast.
+				</p>
+				<div class="hero__actions">
+					<a class="btn btn--forest" href="#sightings">
+						Explore sightings
+						@components.Icon("arrow")
+					</a>
+					<a class="btn btn--ghost" href="#featured">Meet the animals</a>
+				</div>
+				if len(v.Featured) > 0 {
+					<div class="faces">
+						<div class="faces__photos">
+							for _, a := range v.Featured {
+								<img src={ components.Sized(components.Photo(a.Sighting).URL, "small") } alt="" loading="lazy"/>
+							}
+						</div>
+						@components.Icon("leaf")
+						<p>
+							Recorded by { components.Thousands(v.Summary.Recorders) }+ observers
+							<br/>
+							across { strconv.Itoa(v.Counties) } counties
+						</p>
+					</div>
 				}
-			</ul>
-		}
+				<dl class="stats">
+					<div class="stat">
+						<dt>Sightings</dt>
+						<dd>{ components.Thousands(v.Summary.Sightings) }</dd>
+					</div>
+					<div class="stat">
+						<dt>Species</dt>
+						<dd>{ strconv.Itoa(v.Summary.Species) }</dd>
+					</div>
+					<div class="stat">
+						<dt>Photos</dt>
+						<dd>{ components.Thousands(v.Summary.Media) }</dd>
+					</div>
+					<div class="stat stat--glass">
+						<dt>Kenya</dt>
+						<dd>100%</dd>
+					</div>
+				</dl>
+			</div>
+			if p := components.Photo(v.Hero); p.URL != "" {
+				<figure class="hero__image">
+					<img src={ components.Sized(p.URL, "large") } alt={ components.Name(v.Hero.Species) + " in " + components.Where(v.Hero.Location) }/>
+					<figcaption class="hero__credit">
+						<span class="hero__credit-icon">
+							@components.Icon("camera")
+						</span>
+						<span>
+							{ components.Name(v.Hero.Species) }
+							if p.Creator != "" {
+								<small>Photo: { p.Creator }</small>
+							}
+						</span>
+					</figcaption>
+				</figure>
+			}
+			if len(v.Floating) > 0 {
+				<ul class="floaters" aria-label="More animals">
+					for _, a := range v.Floating {
+						<li class="floater">
+							<img src={ components.Sized(components.Photo(a.Sighting).URL, "small") } alt="" loading="lazy"/>
+							<div>
+								<strong>{ a.Name }</strong>
+								<span>{ strconv.Itoa(a.Count) } sightings across Kenya</span>
+							</div>
+						</li>
+					}
+				</ul>
+			}
+		</section>
+		<section id="featured" class="panel featured" aria-labelledby="featured-title">
+			<div class="featured__grid">
+				<div class="featured__text">
+					<p class="eyebrow">
+						@components.Icon("leaf")
+						Most seen
+					</p>
+					<h2 id="featured-title">Meet Kenya's <em>Most-Seen</em> Animals.</h2>
+					<p>
+						From the Masai Mara to Tsavo, these are the animals people spot and
+						record most often.
+					</p>
+					<div class="hero__actions">
+						<a class="btn btn--forest" href="#sightings">
+							Explore sightings
+							@components.Icon("arrow")
+						</a>
+						<a class="btn btn--ghost" href="#about">About the data</a>
+					</div>
+				</div>
+				if len(v.Featured) == 0 {
+					<p class="empty">No photos have been shared yet.</p>
+				} else {
+					<ul class="tall-cards">
+						for i, a := range v.Featured {
+							<li class="tall-card">
+								<img src={ components.Sized(components.Photo(a.Sighting).URL, "large") } alt={ a.Name } loading="lazy"/>
+								<div class="tall-card__body">
+									<span class="icon-circle">
+										@components.Icon(featuredIcon(i))
+									</span>
+									<h3>{ a.Name }</h3>
+									<p>{ strconv.Itoa(a.Count) } sightings across Kenya</p>
+								</div>
+							</li>
+						}
+					</ul>
+				}
+			</div>
+			if len(v.Places) > 0 {
+				<div class="places">
+					<h3>Seen most in</h3>
+					<ul>
+						for _, p := range v.Places {
+							<li>
+								@components.Icon("pin")
+								{ p.Name }
+							</li>
+						}
+					</ul>
+				</div>
+			}
+		</section>
+		<section id="sightings" class="panel sightings" aria-labelledby="sightings-title">
+			<div class="sightings__head">
+				<div>
+					<p class="eyebrow">
+						@components.Icon("leaf")
+						All sightings
+					</p>
+					<h2 id="sightings-title">Real Animals. Real Places.<br/>Kenya's Wild Side.</h2>
+					<p>Every record from Kenya, newest first. { yearSpan(v.Summary) }</p>
+					<a class="link-arrow" href="#about">
+						Where the data comes from
+						@components.Icon("arrow")
+					</a>
+				</div>
+				<aside id="about" class="about-box" aria-labelledby="about-title">
+					<h3 id="about-title">Open Data, Open Eyes.</h3>
+					<p>
+						These sightings come from GBIF, where citizen scientists, researchers and
+						museums share what they've seen. Anyone can add to it.
+					</p>
+					<a class="btn btn--forest" href="https://www.gbif.org/country/KE/summary" rel="noopener">
+						Visit GBIF
+						@components.Icon("arrow")
+					</a>
+				</aside>
+			</div>
+			if len(sightings) == 0 {
+				<p class="empty">No sightings from Kenya have been recorded yet.</p>
+			} else {
+				<ul class="cards">
+					for _, s := range sightings {
+						<li>
+							@components.SightingCard(s)
+						</li>
+					}
+				</ul>
+			}
+		</section>
 	}
 }

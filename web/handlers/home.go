@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"workshop/internal/domain/sighting"
+	"workshop/internal/domain/sighting/country"
 	"workshop/web/views/pages"
 )
 
@@ -17,7 +18,7 @@ func Home(logger *slog.Logger, sightings SightingsLister) http.HandlerFunc {
 		ctx := r.Context()
 
 		items, err := sightings.List(ctx, sighting.ListFilter{
-			Limit: 50,
+			Country: country.Kenya,
 		})
 		if err != nil {
 			logger.ErrorContext(ctx, "handlers: listing sightings: "+err.Error())

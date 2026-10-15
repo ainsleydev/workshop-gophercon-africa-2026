@@ -1,0 +1,8 @@
+{
+	"name": "Kenya Wild",
+	"short_name": "Kenya Wild",
+	"icons": [{ "src": "/assets/images/logo.svg", "sizes": "any", "type": "image/svg+xml" }],
+	"theme_color": "#ECEEE8",
+	"background_color": "#ECEEE8",
+	"display": "standalone"
+}

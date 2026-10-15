@@ -2,6 +2,7 @@ package pages
 
 import (
 	"strconv"
+	"workshop/web/views/components"
 	"workshop/web/views/layout"
 )
 
@@ -9,7 +10,18 @@ templ Error(message string, code int) {
 	@layout.Base(layout.BaseProps{
 		Title: "Error " + strconv.Itoa(code),
 	}) {
-		<h1>{ strconv.Itoa(code) }</h1>
-		<p>{ message }</p>
+		<section class="panel error-page">
+			<p class="eyebrow">
+				@components.Icon("leaf")
+				Error { strconv.Itoa(code) }
+			</p>
+			<h1>{ message }</h1>
+			<p>
+				<a class="link-arrow" href="/">
+					Back to the sightings
+					@components.Icon("arrow")
+				</a>
+			</p>
+		</section>
 	}
 }

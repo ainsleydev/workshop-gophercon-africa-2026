@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<style>
+		.canopy { fill: #4A7A2A; }
+		.trunk { fill: #3B2F1E; }
+		@media (prefers-color-scheme: dark) {
+			.canopy { fill: #D6EA6A; }
+			.trunk { fill: #EDE6D3; }
+		}
+	</style>
+	<path class="canopy" d="M4 23c0-5 6-8.5 12.5-8.5C19.5 10 25.5 7 32 7s12.5 3 15.5 7.5C54 14.5 60 18 60 23c0 4.5-4.5 7-10 7H14c-5.5 0-10-2.5-10-7z"/>
+	<path class="trunk" d="M28.5 56 30 37.5 20 29h5.5l6.5 5.5 6.5-5.5H44l-10 8.5 1.5 18.5z"/>
+	<rect class="canopy" x="12" y="54" width="40" height="4" rx="2"/>
+</svg>

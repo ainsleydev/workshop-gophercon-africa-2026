@@ -8,8 +8,11 @@ package layout
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "workshop/web/views/components"
+
 type BaseProps struct {
-	Title string
+	Title       string
+	Description string
 }
 
 func Base(props BaseProps) templ.Component {
@@ -33,20 +36,43 @@ func Base(props BaseProps) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en-GB\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"icon\" href=\"/assets/images/logo.svg\" type=\"image/svg+xml\"><link rel=\"manifest\" href=\"/assets/manifest.json\"><meta name=\"theme-color\" content=\"#ECEEE8\"><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 13, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 19, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><link rel=\"stylesheet\" href=\"/assets/css/app.css\"></head><body><main class=\"container\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if props.Description != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<meta name=\"description\" content=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(props.Description)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/layout/layout.templ`, Line: 21, Col: 56}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500&display=swap\"><link rel=\"stylesheet\" href=\"/assets/css/app.css\"></head><body id=\"top\"><a class=\"skip-link\" href=\"#content\">Skip to content</a><header class=\"site-header\"><a class=\"logo\" href=\"/\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"36\" height=\"36\"> <span>Kenya Wild</span></a><nav class=\"site-nav\" aria-label=\"Main\"><a href=\"/#top\">Home</a> <a href=\"/#featured\">Featured</a> <a href=\"/#sightings\">Sightings</a> <a href=\"/#about\">About the data</a></nav><a class=\"btn btn--lime site-header__cta\" href=\"/#sightings\">See the animals</a></header><main id=\"content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,7 +80,15 @@ func Base(props BaseProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</main><script src=\"/assets/js/app.js\"></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</main><footer class=\"site-footer\"><div class=\"site-footer__brand\"><a class=\"logo\" href=\"/\"><img src=\"/assets/images/logo.svg\" alt=\"\" width=\"36\" height=\"36\"> <span>Kenya Wild</span></a><p>Every lion, rhino and flamingo here was seen and recorded by someone in Kenya.</p></div><div class=\"site-footer__col\"><h2>Explore</h2><a href=\"/#top\">Home</a> <a href=\"/#featured\">Featured animals</a> <a href=\"/#sightings\">All sightings</a> <a href=\"/#about\">About the data</a></div><div class=\"site-footer__col\"><h2>The data</h2><a href=\"https://www.gbif.org/country/KE/summary\" rel=\"noopener\">GBIF Kenya</a> <a href=\"https://www.gbif.org/what-is-gbif\" rel=\"noopener\">What is GBIF?</a> <a href=\"https://www.inaturalist.org\" rel=\"noopener\">Record your own</a></div><div class=\"site-footer__col site-footer__end\"><span class=\"site-footer__mark\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = components.Icon("leaf").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "Made at GopherCon Africa 2026</span><p class=\"site-footer__copy\">© 2026 Kenya Wild. Sightings from GBIF.</p></div></footer><script src=\"/assets/js/app.js\"></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
